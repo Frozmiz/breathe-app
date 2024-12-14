@@ -1,12 +1,20 @@
+import { useState } from "react";
+import MapComponent from "./MapComponent";
+
 function Header() {
+  const [showMap, setShowMap] = useState(false);
+
   return (
     <header className="text-center py-16 bg-gradient-to-r from-green-400 via-green-600 to-green-800 text-white">
       <h1 className="text-6xl font-extrabold">Find Your Breathe Point</h1>
       <p className="text-lg mt-4">
-        Explore the best nature spot to chill and clean your mind.
+        Explore your best nature spot to chill and clean your mind.
       </p>
       <div className="mt-8 relative inline-block">
-        <button className="relative mt-8 px-6 py-3 bg-white text-green-800 rounded-lg shadow-lg hover:bg-yellow-200 transition duration-500 ease-in">
+        <button
+          className="relative mt-8 px-6 py-3 bg-white text-green-800 rounded-lg shadow-lg hover:bg-yellow-200 transition duration-500 ease-in"
+          onClick={() => setShowMap(!showMap)}
+        >
           {/* Decoraciones con hojas SVG */}
           <span className="absolute left-[-20px] top-[-10px]">
             <svg
@@ -26,7 +34,7 @@ function Header() {
           </span>
           Let's green 🍀
           <span className="absolute right-[-20px] bottom-[-10px]">
-          <svg
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -43,6 +51,12 @@ function Header() {
           </span>
         </button>
       </div>
+
+      {showMap && (
+        <div className="mt-8">
+          <MapComponent />
+        </div>
+      )}
     </header>
   );
 }
