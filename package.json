@@ -7,7 +7,10 @@
     "leaflet": "^1.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+<<<<<<< HEAD
     "react-leaflet": "^5.0.0",
+=======
+>>>>>>> 8814e53e651b1a0a3fcedc5aa289e1ba2292fdd9
     "react-scripts": "5.0.1"
   },
   "scripts": {
