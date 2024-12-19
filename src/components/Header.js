@@ -5,7 +5,7 @@ const App = () => {
   const [showMap, setShowMap] = useState(false);
 
   const handleClick = () => {
-    setShowMap(true); // Muestra el mapa al hacer clic
+    setShowMap(true); // SHOW MAP
   };
 
   return (
@@ -17,7 +17,7 @@ const App = () => {
         Explore the best nature spots to chill and clean your mind.
       </p>
 
-      {/* Botón decorativo */}
+      {/* Buttom */}
       <div className="mt-10">
         <button
           onClick={handleClick}
@@ -26,7 +26,7 @@ const App = () => {
             transition: "background-color 1.5s ease-in-out, transform 1.5s ease-in-out",
           }}
         >
-          {/* Decoración SVG izquierda */}
+          {/* LEFT SVG DECO  */}
           <span
             className="absolute left-[-30px] top-1/2 transform -translate-y-1/2 transition-transform duration-700 ease-in-out group-hover:scale-110"
             style={{
@@ -48,9 +48,9 @@ const App = () => {
               />
             </svg>
           </span>
-          {/* Texto del botón */}
+          
           Let's Green 🍀
-          {/* Decoración SVG derecha */}
+          {/* RIGHT SVG DECO */}
           <span
             className="absolute right-[-30px] top-1/2 transform -translate-y-1/2 transition-transform duration-700 ease-in-out group-hover:scale-110"
             style={{
@@ -72,7 +72,7 @@ const App = () => {
               />
             </svg>
           </span>
-          {/* Efecto Hover: Cambia el fondo a amarillo suave */}
+          
           <style>
             {`
               .group:hover {
@@ -84,7 +84,7 @@ const App = () => {
         </button>
       </div>
 
-      {/* Mostrar el mapa si se activa */}
+      {/* SHOW MAP IF ACTIVATED */}
       {showMap && (
         <div className="mt-12">
           <Map />
