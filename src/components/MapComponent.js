@@ -25,6 +25,8 @@ const Map = () => {
 
   const [nearbyParks, setNearbyParks] = useState([]);
 
+  const [isLoadingParks, setIsLoadingParks] = useState(false);
+
   // Get the user’s location
   useEffect(() => {
     if (navigator.geolocation) {
@@ -45,6 +47,9 @@ const Map = () => {
   // Get parks near asking API
   useEffect(() => {
     if (userLocation) {
+
+      setIsLoadingParks(true); // Inicia la carga
+
       const [latitude, longitude] = userLocation;
       const url = `https://overpass-api.de/api/interpreter?data=[out:json];(node["leisure"="park"](around:5000,${latitude},${longitude});way["leisure"="park"](around:5000,${latitude},${longitude});relation["leisure"="park"](around:5000,${latitude},${longitude}););out;`;
   
@@ -94,40 +99,60 @@ const Map = () => {
         })
         .catch((error) => {
           console.error("Error obteniendo parques:", error);
+        })
+        .finally(() => {
+          setIsLoadingParks(false);
         });
     }
   }, [userLocation]);
 
   return (
     <div className="map-container mt-10 mx-auto max-w-7xl px-4">
-      <MapContainer
-        center={userLocation || [43.6117, 3.8777]} // We use the location of Montpellier if the user has no location
-        zoom={13}
-        style={{ height: "400px", width: "100%" }}
-        className="rounded-xl border-7 border-green-400 shadow-lg shadow-green-200"
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {/* Component to change the map center dynamically */}
-        {userLocation && <ChangeMapCenter position={userLocation} />}
-        {userLocation && (
-          <Marker position={userLocation} icon={userIcon}>
-            <Popup>
-              <b>You are here</b>
-            </Popup>
-          </Marker>
-        )}
-        {/* Parks near with the icon */}
-        {nearbyParks.map((park, index) =>
-          park.lat && park.lng ? (
-            <Marker key={index} position={[park.lat, park.lng]} icon={parkIcon}>
-              <Popup>{park.name}</Popup>
+      {isLoadingParks ? (
+        <div className="flex flex-col justify-center items-center h-64 bg-green-100 rounded-xl shadow-lg">
+          <div className="flex items-center space-x-4">
+            {/* Icono temático */}
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png"
+              alt="Tree icon"
+              className="w-12 h-12 animate-spin-slow"
+            />
+            <p className="text-2xl font-semibold text-green-700">
+              Finding nearby parks...
+            </p>
+          </div>
+          <p className="mt-2 text-green-600 italic">
+            Connecting you with nature 🌿
+          </p>
+        </div>
+      ) : (
+        <MapContainer
+          center={userLocation || [43.6117, 3.8777]} // We use the location of Montpellier if the user has no location
+          zoom={13}
+          style={{ height: "400px", width: "100%" }}
+          className="rounded-xl border-7 border-green-400 shadow-lg shadow-green-200"
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {userLocation && <ChangeMapCenter position={userLocation} />}
+          {userLocation && (
+            <Marker position={userLocation} icon={userIcon}>
+              <Popup>
+                <b>You are here</b>
+              </Popup>
             </Marker>
-          ) : null
-        )}
-      </MapContainer>
+          )}
+          {nearbyParks.map((park, index) =>
+            park.lat && park.lng ? (
+              <Marker key={index} position={[park.lat, park.lng]} icon={parkIcon}>
+                <Popup>{park.name}</Popup>
+              </Marker>
+            ) : null
+          )}
+        </MapContainer>
+      )}
     </div>
   );
 };
